@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  storage-service:
+    build: ./storage-service
+    ports:
+      - "4001:4001"
+    volumes:
+      - ./data/cloud:/app/data/cloud
+    environment:
+      - PORT=4001
+      - UPLOAD_DIR=/app/data/cloud
+
+  media-service:
+    build: ./media-service
+    ports:
+      - "4002:4002"
+    volumes:
+      - ./data/media:/app/data/media
+      - ./data/photos:/app/data/photos
+      - ./data/shorts:/app/data/shorts
+    environment:
+      - PORT=4002
+      - MEDIA_DIR=/app/data/media
+      - PHOTOS_DIR=/app/data/photos
+      - SHORTS_DIR=/app/data/shorts
+
+  admin-service:
+    build: ./admin-service
+    ports:
+      - "4003:4003"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - PORT=4003
